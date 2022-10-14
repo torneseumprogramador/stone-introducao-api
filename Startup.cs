@@ -50,7 +50,13 @@ namespace api_stone
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api_stone v1"));
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

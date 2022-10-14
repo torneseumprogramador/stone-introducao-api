@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Utilizando API</title>
+        <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    </head>
+    <body class="container">
+        <h1>Clientes</h1>
+        <br>
+
+        <form onsubmit="cadastrar(event)">
+            <label for="nome">Nome:</label><br>
+            <input type="text" id="nome" name="nome" value=""><br>
+            <label for="telefone">Telefone:</label><br>
+            <input type="text" id="telefone" name="telefone" value=""><br><br>
+            <input type="submit" class="btn btn-primary" value="Enviar">
+        </form> 
+
+        <hr>
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Telefone</th>
+              </tr>
+            </thead>
+            <tbody id="linhas">
+              <tr>
+                <th scope="row"> Carregando ... </th>
+                <td> Carregando ... </td>
+                <td> Carregando ... </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <script>
+            const API_HOST = "http://localhost:5000";
+
+            var cadastrar = async (event) => {
+                event.preventDefault();
+
+                let cliente = {
+                    nome: document.getElementById("nome").value,
+                    telefone: document.getElementById("telefone").value,
+                };
+
+                const settings = {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cliente)
+                };
+                try {
+                    const fetchResponse = await fetch(`${API_HOST}/clientes`, settings);
+                    await fetchResponse.json();
+
+                    document.getElementById("nome").value = "";
+                    document.getElementById("telefone").value = ""
+
+                    carregarClientes();
+                } catch (e) {
+                    console.log(e);
+                }    
+            }
+
+            var carregarClientes = async () => {
+                const settings = {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                };
+                try {
+                    const fetchResponse = await fetch(`${API_HOST}/clientes`, settings);
+                    const clientes = await fetchResponse.json();
+                    let html = "";
+                    clientes.forEach(cliente => {
+                        html += `
+                            <tr>
+                                <th scope="row">${cliente.id}</th>
+                                <td>${cliente.nome}</td>
+                                <td>${cliente.telefone}</td>
+                            </tr>
+                        ` 
+                    });
+
+                    document.getElementById("linhas").innerHTML = html;
+                } catch (e) {
+                    console.log(e);
+                }    
+            }
+
+            carregarClientes();
+          </script>
+    </body>
+</html>
