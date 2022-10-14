@@ -12,40 +12,20 @@ namespace api_stone.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+        private DbContexto db;
+        public HomeController(DbContexto _db)
+        {
+            this.db = _db;
+        }
+
         [HttpGet]
         [Route("/")]
         public ActionResult Get()
         {
-            var clientes = ClienteSingleton.GetInstancia().Clientes();
-            return StatusCode(200, clientes);
-        }
-
-        [HttpPost]
-        [Route("/")]
-        public ActionResult Post([FromBody] Cliente cliente)
-        {
-            ClienteSingleton.GetInstancia().Adicionar(cliente);
-            return StatusCode(201, cliente);
-        }
-
-        [HttpPut]
-        [Route("/")]
-        public dynamic Atualizando()
-        {
-            return new
-            {
-                Mensagem = "Estou acessando um PUT"
-            };
-        }
-
-        [HttpDelete]
-        [Route("/")]
-        public dynamic Excluindo()
-        {
-            return new
-            {
-                Mensagem = "Estou acessando um Delete"
-            };
+            return StatusCode(200, new {
+                Mensagem = "Bem vindo a API",
+                Documentacao = "https://localhost:5001/swagger/index.html"
+            });
         }
     }
 }
