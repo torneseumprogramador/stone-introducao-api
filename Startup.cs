@@ -28,7 +28,7 @@ namespace api_stone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string conexao = Configuration.GetConnectionString("mysql");
+            string conexao = Environment.GetEnvironmentVariable("DATABASE_URL");
             services.AddDbContext<DbContexto>(options => {
                 options.UseMySql(conexao, ServerVersion.AutoDetect(conexao));
             });
