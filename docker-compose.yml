@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  apiStone:
+    container_name: api-stone-treinamento
+    image: didox/api-stone-treinamento
+    environment:
+      DATABASE_URL: "server=localhost;port=3306;database=stone;uid=root;password=root;persistsecurityinfo=True;"
+    ports:
+      - "5001:80"
